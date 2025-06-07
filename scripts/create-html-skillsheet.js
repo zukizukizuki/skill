@@ -414,7 +414,7 @@ function extractCareers(content) {
       // 期間とプロジェクト名を抽出
       const titleMatch = section.match(/### (\d+)\. (.*?)（(.*?)）/);
       if (titleMatch) {
-        period = titleMatch[3];
+        period = formatPeriod(titleMatch[3]);
         description = titleMatch[2];
       }
       
@@ -502,6 +502,12 @@ function extractCareers(content) {
 // スキル情報を抽出（今回は使用しないが将来の拡張用）
 function extractSkills(content) {
   return {};
+}
+
+// 期間をフォーマット（例：2012年4月 - 2018年7月から2012年4月〜2018年7月へ）
+function formatPeriod(periodText) {
+  // "2012年4月 - 2018年7月" の形式を "2012年4月〜2018年7月" に変換
+  return periodText.replace(' - ', '〜');
 }
 
 // 実行

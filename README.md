@@ -135,9 +135,17 @@ npm run convert:pdf
 
 ### GitHub Pagesの有効化
 
+**重要**: 以下の設定をGitHubリポジトリで行ってください：
+
 1. **Settings** → **Pages** 
-2. **Source**: Deploy from a branch → **GitHub Actions**
-3. **Actions** → **General** → **Workflow permissions**: Read and write permissions
+   - **Source**: Deploy from a branch → **GitHub Actions**
+
+2. **Settings** → **Actions** → **General**
+   - **Workflow permissions**: Read and write permissions
+
+3. **初回実行時のエラー対応**
+   - GitHub Pagesが有効化されていない場合、404エラーが発生します
+   - エラーメッセージのリンクから Pages 設定に移動して有効化してください
 
 ### 初回セットアップ
 
