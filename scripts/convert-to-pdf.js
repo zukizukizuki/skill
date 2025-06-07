@@ -9,7 +9,7 @@ async function convertMarkdownToPdf() {
   
   try {
     // Puppeteerを起動（日本語フォント対応）
-    browser = await puppeteer.launch({
+    const puppeteerOptions = {
       headless: 'new',
       args: [
         '--no-sandbox', 
@@ -21,9 +21,18 @@ async function convertMarkdownToPdf() {
         '--disable-backgrounding-occluded-windows',
         '--disable-renderer-backgrounding',
         '--font-render-hinting=none',
-        '--disable-font-subpixel-positioning'
+        '--disable-font-subpixel-positioning',
+        '--disable-web-security',
+        '--disable-features=VizDisplayCompositor'
       ]
-    });
+    };
+    
+    // GitHub Actions環境でのChromiumパス設定
+    if (process.env.PUPPETEER_EXECUTABLE_PATH) {
+      puppeteerOptions.executablePath = process.env.PUPPETEER_EXECUTABLE_PATH;
+    }
+    
+    browser = await puppeteer.launch(puppeteerOptions);
     
     // skill-sheetsディレクトリのMarkdownファイルを取得
     const markdownFiles = glob.sync('skill-sheets/*.md');
