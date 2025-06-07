@@ -120,7 +120,7 @@ async function createBasicInfoSheet(worksheet, data, content) {
   worksheet.getCell(`A${row}`).style = headerStyle;
   row++;
   
-  worksheet.mergeCells(`A${row}:D${row}`);
+  worksheet.mergeCells(`A${row}:D${row + 8}`);
   worksheet.getCell(`A${row}`).value = `業界歴 12年以上
 
 【得意分野】
@@ -136,6 +136,18 @@ async function createBasicInfoSheet(worksheet, data, content) {
   worksheet.getCell(`A${row}`).style = dataStyle;
   worksheet.getRow(row).height = 200;
   
+  row += 10;
+  
+  // 外部リンク
+  worksheet.mergeCells(`A${row}:D${row}`);
+  worksheet.getCell(`A${row}`).value = '外部リンク';
+  worksheet.getCell(`A${row}`).style = headerStyle;
+  row++;
+  
+  worksheet.mergeCells(`A${row}:D${row}`);
+  worksheet.getCell(`A${row}`).value = 'zenn: https://zenn.dev/zuzuzu';
+  worksheet.getCell(`A${row}`).style = dataStyle;
+  
   // 列幅調整
   worksheet.getColumn(1).width = 30;
   worksheet.getColumn(2).width = 20;
@@ -148,7 +160,7 @@ async function createCareerSheet(worksheet, content) {
   const headerStyle = {
     font: { bold: true, size: 10 },
     fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'E7E6E6' } },
-    alignment: { horizontal: 'center', vertical: 'middle' },
+    alignment: { horizontal: 'center', vertical: 'middle', wrapText: true },
     border: {
       top: { style: 'thin' },
       left: { style: 'thin' },
@@ -159,6 +171,17 @@ async function createCareerSheet(worksheet, content) {
   
   const dataStyle = {
     alignment: { horizontal: 'left', vertical: 'top', wrapText: true },
+    font: { size: 9 },
+    border: {
+      top: { style: 'thin' },
+      left: { style: 'thin' },
+      bottom: { style: 'thin' },
+      right: { style: 'thin' }
+    }
+  };
+
+  const centerStyle = {
+    alignment: { horizontal: 'center', vertical: 'middle' },
     font: { size: 9 },
     border: {
       top: { style: 'thin' },
@@ -212,25 +235,26 @@ async function createCareerSheet(worksheet, content) {
     // 担当工程のチェックマーク
     career.phases.forEach((phase, phaseIndex) => {
       worksheet.getCell(row, 8 + phaseIndex).value = phase ? '●' : '';
+      worksheet.getCell(row, 8 + phaseIndex).style = centerStyle;
     });
     
     // スタイル適用
-    for (let col = 1; col <= 13; col++) {
+    for (let col = 1; col <= 7; col++) {
       worksheet.getCell(row, col).style = dataStyle;
     }
     
-    worksheet.getRow(row).height = 100;
+    worksheet.getRow(row).height = 120;
     row++;
   });
   
   // 列幅調整
   worksheet.getColumn(1).width = 5;   // No
   worksheet.getColumn(2).width = 15;  // 期間
-  worksheet.getColumn(3).width = 40;  // 業務内容
-  worksheet.getColumn(4).width = 15;  // 使用言語
-  worksheet.getColumn(5).width = 15;  // サーバー
-  worksheet.getColumn(6).width = 15;  // ツール
-  worksheet.getColumn(7).width = 15;  // 役割
+  worksheet.getColumn(3).width = 50;  // 業務内容
+  worksheet.getColumn(4).width = 18;  // 使用言語
+  worksheet.getColumn(5).width = 18;  // サーバー
+  worksheet.getColumn(6).width = 18;  // ツール
+  worksheet.getColumn(7).width = 18;  // 役割
   // 担当工程列
   for (let i = 8; i <= 13; i++) {
     worksheet.getColumn(i).width = 8;
@@ -273,6 +297,7 @@ async function createSkillSheet(worksheet, content) {
   worksheet.getCell('A2').value = '【A】業務の独力遂行。業務課題発見・解決。後進教育 【B】業務の独力遂行 【C】業務を上位者指導のもと遂行 【D】実務を通じた学習経験あり 【E】学習経験あり';
   worksheet.getCell('A2').style = dataStyle;
   worksheet.getCell('A2').alignment = { horizontal: 'left', vertical: 'middle', wrapText: true };
+  worksheet.getRow(2).height = 30;
   row += 2;
   
   // スキルテーブル作成
@@ -403,7 +428,7 @@ function extractQualifications(content) {
         });
       }
     }
-    if (inQualTable && line.trim() === '') {
+    if (inQualTable && !line.includes('|')) {
       inQualTable = false;
     }
   }
@@ -431,7 +456,46 @@ function extractCareers(content) {
       const titleMatch = section.match(/### (\d+)\. (.*?)（(.*?)）/);
       if (titleMatch) {
         period = titleMatch[3];
-        description = titleMatch[2];
+        description = `■${titleMatch[2]}`;
+      }
+      
+      // 業務内容を抽出
+      const contentLines = [];
+      let inContent = false;
+      
+      lines.forEach(line => {
+        if (line.includes('#### 業務内容')) {
+          inContent = true;
+          return;
+        }
+        if (line.includes('#### 使用技術') || line.includes('#### 成果・自己PR')) {
+          inContent = false;
+          return;
+        }
+        if (inContent && line.startsWith('- ')) {
+          contentLines.push('・' + line.substring(2));
+        }
+      });
+      
+      if (contentLines.length > 0) {
+        description += '\n' + contentLines.join('\n');
+      }
+      
+      // 成果・自己PRを抽出
+      const prLines = [];
+      let inPR = false;
+      lines.forEach(line => {
+        if (line.includes('#### 成果・自己PR')) {
+          inPR = true;
+          return;
+        }
+        if (inPR && line.startsWith('- ')) {
+          prLines.push('・' + line.substring(2));
+        }
+      });
+      
+      if (prLines.length > 0) {
+        description += '\n\n■成果・自己PR\n' + prLines.join('\n');
       }
       
       // 使用技術を抽出
@@ -453,7 +517,15 @@ function extractCareers(content) {
       // 役割を抽出
       if (section.includes('**役割**:')) {
         const roleMatch = section.match(/\*\*役割\*\*: (.*?)$/m);
-        if (roleMatch) role = roleMatch[1];
+        if (roleMatch) role = `役割: ${roleMatch[1]}`;
+      }
+      
+      // チーム規模を抽出
+      if (section.includes('**チーム規模**:')) {
+        const teamMatch = section.match(/\*\*チーム規模\*\*: (.*?)$/m);
+        if (teamMatch) {
+          role += `\n規模: ${teamMatch[1]}`;
+        }
       }
       
       // 担当工程を抽出
@@ -468,35 +540,6 @@ function extractCareers(content) {
           phases[4] = phaseText.includes('テスト');
           phases[5] = phaseText.includes('保守・運用');
         }
-      }
-      
-      // 業務内容を整理
-      const contentLines = [];
-      let inContent = false;
-      let inTech = false;
-      
-      lines.forEach(line => {
-        if (line.includes('#### 業務内容')) {
-          inContent = true;
-          return;
-        }
-        if (line.includes('#### 使用技術')) {
-          inContent = false;
-          inTech = true;
-          return;
-        }
-        if (line.includes('#### 成果・自己PR')) {
-          inContent = false;
-          inTech = false;
-          return;
-        }
-        if (inContent && line.startsWith('- ')) {
-          contentLines.push(line.substring(2));
-        }
-      });
-      
-      if (contentLines.length > 0) {
-        description = `■${description}\n${contentLines.join('\n')}`;
       }
       
       careers.push({

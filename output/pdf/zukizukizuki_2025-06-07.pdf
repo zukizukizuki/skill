@@ -38,22 +38,38 @@ endobj
 
 5 0 obj
 <<
-/Length 200
+/Length 440
 >>
 stream
 BT
-/F1 14 Tf
+/F1 16 Tf
 50 750 Td
-(スキルシート) Tj
-0 -30 Td
+(Skill Sheet Generator) Tj
+0 -40 Td
 /F1 12 Tf
-(適切なPDFを生成するためには、HTMLファイルを) Tj
-0 -20 Td
-(ブラウザで開き、印刷機能でPDFとして保存してください。) Tj
+(To generate a proper PDF file, please follow these steps:) Tj
 0 -30 Td
-(HTMLファイルパス:) Tj
+(1. Open the HTML file in your web browser:) Tj
 0 -20 Td
-(skill/output/html/zukizukizuki_2025-06-07.html) Tj
+(   skill/output/html/zukizukizuki_2025-06-07.html) Tj
+0 -30 Td
+(2. Use your browser's print function \(Ctrl+P\)) Tj
+0 -20 Td
+(3. Select "Save as PDF" or "Print to PDF") Tj
+0 -20 Td
+(4. Choose appropriate settings:) Tj
+0 -20 Td
+(   - Paper size: A4) Tj
+0 -20 Td
+(   - Margins: Minimum) Tj
+0 -20 Td
+(   - Scale: 100% or fit to page) Tj
+0 -30 Td
+(This will create a properly formatted, non-garbled PDF.) Tj
+0 -30 Td
+(The HTML file is optimized for printing and will produce) Tj
+0 -20 Td
+(a clean, professional-looking skill sheet in PDF format.) Tj
 ET
 endstream
 endobj
@@ -72,5 +88,5 @@ trailer
 /Root 1 0 R
 >>
 startxref
-584
+824
 %%EOF
