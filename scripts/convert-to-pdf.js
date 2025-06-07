@@ -208,11 +208,19 @@ async function convertMarkdownToPdf() {
         
         /* リンク */
         a {
-            color: #3498db;
+            color: #333;
             text-decoration: none;
         }
         a:hover {
             text-decoration: underline;
+        }
+        
+        /* PDF用：印刷時はリンクの色を通常のテキストと同じにする */
+        @media print {
+            a {
+                color: #333 !important;
+                text-decoration: none !important;
+            }
         }
         
         /* ページ分割制御 */
@@ -466,8 +474,8 @@ function processInlineMarkdown(text) {
   // インラインコード
   processed = processed.replace(/`([^`]+)`/g, '<code>$1</code>');
   
-  // リンク
-  processed = processed.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+  // リンク（PDFでは通常のテキストとして扱う）
+  processed = processed.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '$1');
   
   return processed;
 }
