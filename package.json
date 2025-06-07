@@ -1,0 +1,22 @@
+{
+  "name": "skill-sheet-generator",
+  "version": "1.0.0",
+  "description": "Convert Markdown skill sheets to PDF and Excel for HR sharing",
+  "main": "index.js",
+  "scripts": {
+    "convert:pdf": "node scripts/convert-to-pdf.js",
+    "convert:excel": "node scripts/convert-to-excel.js",
+    "convert:all": "npm run convert:pdf && npm run convert:excel",
+    "update:attachments": "node scripts/update-markdown-with-files.js"
+  },
+  "keywords": ["skill-sheet", "resume", "markdown", "pdf", "excel", "hr", "recruitment"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "puppeteer": "^22.0.0",
+    "glob": "^10.3.10",
+    "fs-extra": "^11.2.0",
+    "gray-matter": "^4.0.3",
+    "exceljs": "^4.4.0"
+  }
+}

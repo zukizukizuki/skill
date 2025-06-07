@@ -1,0 +1,223 @@
+/* リセットと基本設定 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+  line-height: 1.6;
+  color: #333;
+  background-color: #f5f5f5;
+}
+
+/* コンテナ */
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: white;
+  min-height: 100vh;
+}
+
+/* スキルシート本体 */
+.skill-sheet {
+  padding: 40px;
+}
+
+/* 見出し */
+h1 {
+  font-size: 2.5em;
+  color: #2c3e50;
+  margin-bottom: 30px;
+  padding-bottom: 10px;
+  border-bottom: 3px solid #3498db;
+}
+
+h2 {
+  font-size: 1.8em;
+  color: #34495e;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  padding-left: 10px;
+  border-left: 4px solid #3498db;
+}
+
+h3 {
+  font-size: 1.4em;
+  color: #555;
+  margin-top: 30px;
+  margin-bottom: 15px;
+}
+
+h4 {
+  font-size: 1.2em;
+  color: #666;
+  margin-top: 25px;
+  margin-bottom: 10px;
+}
+
+/* テーブル */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+th, td {
+  padding: 12px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+th {
+  background-color: #3498db;
+  color: white;
+  font-weight: 600;
+}
+
+tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+tr:hover {
+  background-color: #e8f4f8;
+}
+
+/* リスト */
+ul, ol {
+  margin: 15px 0;
+  padding-left: 30px;
+}
+
+li {
+  margin: 5px 0;
+}
+
+/* 強調 */
+strong {
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+/* リンク */
+a {
+  color: #3498db;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* 引用 */
+blockquote {
+  background-color: #fff3cd;
+  border-left: 4px solid #ffc107;
+  padding: 15px;
+  margin: 20px 0;
+  font-style: italic;
+}
+
+/* フッター */
+footer {
+  margin-top: 50px;
+  padding: 20px;
+  text-align: center;
+  color: #777;
+  border-top: 1px solid #eee;
+  font-size: 0.9em;
+}
+
+/* インデックスページ用スタイル */
+.portfolio-card {
+  background: white;
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.portfolio-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+
+.portfolio-card h2 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  border-left: none;
+  padding-left: 0;
+}
+
+.portfolio-card a {
+  color: #2c3e50;
+  text-decoration: none;
+}
+
+.portfolio-card a:hover {
+  color: #3498db;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+header h1 {
+  border-bottom: none;
+  margin-bottom: 10px;
+}
+
+header p {
+  color: #666;
+  font-size: 1.1em;
+}
+
+/* レスポンシブデザイン */
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+  
+  .skill-sheet {
+    padding: 20px;
+  }
+  
+  h1 {
+    font-size: 2em;
+  }
+  
+  h2 {
+    font-size: 1.5em;
+  }
+  
+  table {
+    font-size: 0.9em;
+  }
+  
+  th, td {
+    padding: 8px;
+  }
+}
+
+/* 印刷用スタイル */
+@media print {
+  body {
+    background-color: white;
+  }
+  
+  .container {
+    max-width: none;
+    padding: 0;
+    box-shadow: none;
+  }
+  
+  footer {
+    page-break-inside: avoid;
+  }
+}
