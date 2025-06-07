@@ -384,7 +384,10 @@ public_version: true
 ## 📎 添付ファイル
 
 ### 📄 PDF版
-- [zukizukizuki_2025-06-07.pdf](output/pdf/zukizukizuki_2025-06-07.pdf)
+- [zukizukizuki_2025-06-07.pdf](../output/pdf/zukizukizuki_2025-06-07.pdf)
 
 ### 📊 Excel版
-- [zukizukizuki_2025-06-07.xlsx](output/excel/zukizukizuki_2025-06-07.xlsx)
+- [zukizukizuki_2025-06-07.xlsx](../output/excel/zukizukizuki_2025-06-07.xlsx)
+
+### 🌐 HTML版
+- [zukizukizuki_2025-06-07.html](../output/html/zukizukizuki_2025-06-07.html)

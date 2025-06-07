@@ -38,13 +38,22 @@ endobj
 
 5 0 obj
 <<
-/Length 44
+/Length 200
 >>
 stream
 BT
+/F1 14 Tf
+50 750 Td
+(スキルシート) Tj
+0 -30 Td
 /F1 12 Tf
-100 700 Td
-(PDF generation in progress...) Tj
+(適切なPDFを生成するためには、HTMLファイルを) Tj
+0 -20 Td
+(ブラウザで開き、印刷機能でPDFとして保存してください。) Tj
+0 -30 Td
+(HTMLファイルパス:) Tj
+0 -20 Td
+(skill/output/html/zukizukizuki_2025-06-07.html) Tj
 ET
 endstream
 endobj
@@ -63,5 +72,5 @@ trailer
 /Root 1 0 R
 >>
 startxref
-426
+584
 %%EOF
