@@ -1,4 +1,4 @@
-name: Convert Skill Sheets
+name: Convert Skill Sheets and Deploy
 
 on:
   push:
@@ -22,6 +22,10 @@ permissions:
   pages: write
   id-token: write
   actions: read
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
   convert:

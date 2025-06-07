@@ -6,7 +6,8 @@
   "scripts": {
     "convert:pdf": "node scripts/convert-to-pdf.js",
     "convert:excel": "node scripts/convert-to-excel.js",
-    "convert:all": "npm run convert:pdf && npm run convert:excel",
+    "convert:html": "node scripts/create-html-skillsheet.js",
+    "convert:all": "npm run convert:pdf && npm run convert:excel && npm run convert:html",
     "update:attachments": "node scripts/update-markdown-with-files.js"
   },
   "keywords": ["skill-sheet", "resume", "markdown", "pdf", "excel", "hr", "recruitment"],
