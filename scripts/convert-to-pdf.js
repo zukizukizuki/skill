@@ -8,6 +8,16 @@ async function convertMarkdownToPdf() {
   let browser;
   
   try {
+    console.log('Starting PDF conversion process...');
+    console.log('Current working directory:', process.cwd());
+    console.log('Environment variables:');
+    console.log('- PUPPETEER_EXECUTABLE_PATH:', process.env.PUPPETEER_EXECUTABLE_PATH);
+    console.log('- DISPLAY:', process.env.DISPLAY);
+    
+    // output/pdf ディレクトリを確実に作成
+    await fs.ensureDir('output/pdf');
+    console.log('Created output/pdf directory');
+    
     // Puppeteerを起動（日本語フォント対応）
     const puppeteerOptions = {
       headless: 'new',
@@ -30,9 +40,12 @@ async function convertMarkdownToPdf() {
     // GitHub Actions環境でのChromiumパス設定
     if (process.env.PUPPETEER_EXECUTABLE_PATH) {
       puppeteerOptions.executablePath = process.env.PUPPETEER_EXECUTABLE_PATH;
+      console.log('Using custom Chromium path:', process.env.PUPPETEER_EXECUTABLE_PATH);
     }
     
+    console.log('Launching Puppeteer with options:', JSON.stringify(puppeteerOptions, null, 2));
     browser = await puppeteer.launch(puppeteerOptions);
+    console.log('Puppeteer launched successfully');
     
     // skill-sheetsディレクトリのMarkdownファイルを取得
     const markdownFiles = glob.sync('skill-sheets/*.md');
@@ -240,7 +253,9 @@ async function convertMarkdownToPdf() {
       
       // PDFに変換（ファイル名に日付を追加）
       const pdfPath = path.join('output/pdf', `${filename}_${dateString}.pdf`);
-      await page.pdf({
+      console.log(`Generating PDF: ${pdfPath}`);
+      
+      const pdfOptions = {
         path: pdfPath,
         format: 'A4',
         printBackground: true,
@@ -251,7 +266,19 @@ async function convertMarkdownToPdf() {
           right: '15mm'
         },
         preferCSSPageSize: false
-      });
+      };
+      
+      console.log('PDF options:', JSON.stringify(pdfOptions, null, 2));
+      await page.pdf(pdfOptions);
+      
+      // ファイルが実際に作成されたか確認
+      const fileExists = await fs.pathExists(pdfPath);
+      console.log(`PDF file exists: ${fileExists}`);
+      
+      if (fileExists) {
+        const stats = await fs.stat(pdfPath);
+        console.log(`PDF file size: ${stats.size} bytes`);
+      }
       
       await page.close();
       console.log(`✓ Converted: ${markdownFile} → ${pdfPath}`);

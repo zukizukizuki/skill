@@ -76,10 +76,14 @@ jobs:
         PUPPETEER_EXECUTABLE_PATH: /usr/bin/chromium
         PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
         
-    - name: List generated files
+    - name: Check PDF directory and files
       run: |
+        echo "Checking output directory structure:"
+        ls -la output/ || echo "output directory does not exist"
+        ls -la output/pdf/ || echo "output/pdf directory does not exist"
+        echo ""
         echo "Generated files:"
-        find output -type f -name "*.xlsx" -o -name "*.html" -o -name "*.pdf" | sort
+        find output -type f -name "*.xlsx" -o -name "*.html" -o -name "*.pdf" | sort || echo "No files found"
         
     - name: Upload Excel files as artifacts
       uses: actions/upload-artifact@v4
