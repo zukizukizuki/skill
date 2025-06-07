@@ -38,6 +38,7 @@ async function convertMarkdownToPdf() {
     const markdownFiles = glob.sync('skill-sheets/*.md');
     
     console.log(`Found ${markdownFiles.length} markdown files to convert to PDF`);
+    console.log('Markdown files:', markdownFiles);
     
     for (const markdownFile of markdownFiles) {
       const filename = path.basename(markdownFile, '.md');
@@ -45,6 +46,10 @@ async function convertMarkdownToPdf() {
       
       // Front matterを解析
       const { data, content: markdownContent } = matter(content);
+      
+      console.log(`Processing file: ${markdownFile}`);
+      console.log(`Front matter:`, data);
+      console.log(`Content length: ${markdownContent.length} characters`);
       
       const page = await browser.newPage();
       

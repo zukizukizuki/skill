@@ -65,12 +65,13 @@ jobs:
           fonts-noto-cjk
           
     - name: Convert to PDF
-      continue-on-error: true
       run: |
         export DISPLAY=:99
         Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
-        sleep 2
-        npm run convert:pdf || echo "PDF generation failed, but continuing workflow"
+        sleep 3
+        echo "Starting PDF conversion..."
+        npm run convert:pdf
+        echo "PDF conversion completed"
       env:
         PUPPETEER_EXECUTABLE_PATH: /usr/bin/chromium
         PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
