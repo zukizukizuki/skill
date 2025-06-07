@@ -441,8 +441,13 @@ function extractCareers(content) {
   const careers = [];
   const sections = content.split('---');
   
-  sections.forEach(section => {
-    if (section.includes('### ') && section.includes('**期間**:')) {
+  console.log(`Found ${sections.length} sections when splitting by ---`);
+  
+  sections.forEach((section, index) => {
+    if (section.includes('### ') && section.match(/### \d+\./)) {
+      console.log(`Processing career section ${index + 1}:`);
+      console.log(`Section preview: ${section.substring(0, 200)}...`);
+      
       const lines = section.split('\n');
       let period = '';
       let description = '';
@@ -457,6 +462,9 @@ function extractCareers(content) {
       if (titleMatch) {
         period = formatPeriod(titleMatch[3]);
         description = `■${titleMatch[2]}`;
+        console.log(`Extracted: period=${period}, description=${description}`);
+      } else {
+        console.log(`Title match failed for section`);
       }
       
       // 業務内容を抽出
@@ -499,18 +507,20 @@ function extractCareers(content) {
       }
       
       // 使用技術を抽出
-      if (section.includes('**言語**:')) {
-        const langMatch = section.match(/\*\*言語\*\*: (.*?)$/m);
+      const techSection = section.match(/#### 使用技術([\s\S]*?)(?=####|$)/);
+      if (techSection) {
+        const techText = techSection[1];
+        
+        // 言語を抽出
+        const langMatch = techText.match(/\*\*言語\*\*: (.*?)(?:\n|$)/);
         if (langMatch) languages = langMatch[1];
-      }
-      
-      if (section.includes('**OS')) {
-        const serverMatch = section.match(/\*\*OS[^:]*\*\*: (.*?)$/m);
-        if (serverMatch) servers = serverMatch[1];
-      }
-      
-      if (section.includes('**ツール**:')) {
-        const toolMatch = section.match(/\*\*ツール\*\*: (.*?)$/m);
+        
+        // OS/DBを抽出
+        const osMatch = techText.match(/\*\*OS[^:]*\*\*: (.*?)(?:\n|$)/);
+        if (osMatch) servers = osMatch[1];
+        
+        // ツールを抽出
+        const toolMatch = techText.match(/\*\*ツール\*\*: (.*?)(?:\n|$)/);
         if (toolMatch) tools = toolMatch[1];
       }
       
@@ -542,6 +552,16 @@ function extractCareers(content) {
         }
       }
       
+      console.log(`Final career entry:`, {
+        period,
+        description: description.substring(0, 100) + '...',
+        languages,
+        servers,
+        tools,
+        role,
+        phases
+      });
+      
       careers.push({
         period,
         description,
@@ -554,6 +574,7 @@ function extractCareers(content) {
     }
   });
   
+  console.log(`Total careers extracted: ${careers.length}`);
   return careers;
 }
 
