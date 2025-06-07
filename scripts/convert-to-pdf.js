@@ -14,6 +14,12 @@ async function convertMarkdownToPdf() {
       args: [
         '--no-sandbox', 
         '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-extensions',
+        '--disable-gpu',
+        '--disable-background-timer-throttling',
+        '--disable-backgrounding-occluded-windows',
+        '--disable-renderer-backgrounding',
         '--font-render-hinting=none',
         '--disable-font-subpixel-positioning'
       ]

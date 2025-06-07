@@ -388,9 +388,3 @@ public_version: true
 
 ### 📊 Excel版
 - [zukizukizuki_2025-06-07.xlsx](output/excel/zukizukizuki_2025-06-07.xlsx)
-
----
-
-*💡 このスキルシートは [Skill Sheet Generator](https://github.com/zukizukizuki/skill) で自動生成されています*
-
-**生成日時**: 2025年6月7日 午後5:29
