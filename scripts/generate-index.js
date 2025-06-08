@@ -6,10 +6,10 @@ const glob = require('glob');
 async function generateIndex() {
   console.log('Generating index.html for GitHub Pages...');
   
-  // 出力ディレクトリ内のファイルを検索
-  const pdfFiles = glob.sync('output/pdf/*.pdf').map(f => path.basename(f));
-  const excelFiles = glob.sync('output/excel/*.xlsx').map(f => path.basename(f));
-  const htmlFiles = glob.sync('output/html/*.html').map(f => path.basename(f));
+  // 出力ディレクトリ内のファイルを検索し、最新のみを取得
+  const pdfFiles = getLatestFiles(glob.sync('output/pdf/*.pdf'));
+  const excelFiles = getLatestFiles(glob.sync('output/excel/*.xlsx'));
+  const htmlFiles = getLatestFiles(glob.sync('output/html/*.html'));
   
   console.log('Found files:');
   console.log('PDFs:', pdfFiles);
@@ -50,7 +50,8 @@ async function generateIndex() {
         
         <div class="info">
             <strong>💡 自動生成されたスキルシートファイル</strong><br>
-            <a href="https://github.com/zukizukizuki/skill/blob/main/skill-sheets/zukizukizuki.md" target="_blank">Markdownファイル</a>から自動的に変換されたスキルシートをダウンロードできます。
+            <a href="https://github.com/zukizukizuki/skill/blob/main/skill-sheets/zukizukizuki.md" target="_blank">Markdownファイル</a>から自動的に変換されたスキルシートをダウンロードできます。<br>
+            <small>※ 個人情報は含まれていません。詳細な情報は個別にご提供いたします。</small>
         </div>
         
         ${pdfFiles.length === 0 ? `
@@ -109,6 +110,26 @@ async function generateIndex() {
   // index.htmlを出力ディレクトリに保存
   await fs.writeFile('output/index.html', indexHtml);
   console.log('✓ Generated index.html');
+}
+
+// 最新のファイルのみを取得する関数
+function getLatestFiles(files) {
+  if (files.length === 0) return [];
+  
+  // ファイル名から日付を抽出して最新のものを取得
+  const filesByBaseName = {};
+  
+  files.forEach(file => {
+    const basename = path.basename(file);
+    const nameWithoutExt = basename.replace(/\.(pdf|xlsx|html)$/, '');
+    const nameWithoutDate = nameWithoutExt.replace(/_\d{4}-\d{2}-\d{2}$/, '');
+    
+    if (!filesByBaseName[nameWithoutDate] || basename > filesByBaseName[nameWithoutDate]) {
+      filesByBaseName[nameWithoutDate] = basename;
+    }
+  });
+  
+  return Object.values(filesByBaseName);
 }
 
 // 実行

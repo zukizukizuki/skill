@@ -401,7 +401,7 @@ function extractCareers(content) {
   const sections = content.split('---');
   
   sections.forEach(section => {
-    if (section.includes('### ') && section.includes('**期間**:')) {
+    if (section.includes('### ') && (section.includes('**役割**:') || section.includes('**期間**:'))) {
       const lines = section.split('\n');
       let period = '';
       let description = '';
@@ -412,7 +412,7 @@ function extractCareers(content) {
       let phases = [false, false, false, false, false, false];
       
       // 期間とプロジェクト名を抽出
-      const titleMatch = section.match(/### (\d+)\. (.*?)（(.*?)）/);
+      const titleMatch = section.match(/### (\d+)\. (.*)（(.*)）/);
       if (titleMatch) {
         period = formatPeriod(titleMatch[3]);
         description = titleMatch[2];
@@ -420,45 +420,45 @@ function extractCareers(content) {
       
       // 使用技術を抽出
       if (section.includes('**言語**:')) {
-        const langMatch = section.match(/\*\*言語\*\*: (.*?)$/m);
-        if (langMatch) languages = langMatch[1];
+        const langMatch = section.match(/\*\*言語\*\*: (.*)$/m);
+        if (langMatch) languages = langMatch[1].replace(/,/g, ', ');
       }
       
       if (section.includes('**OS')) {
-        const serverMatch = section.match(/\*\*OS[^:]*\*\*: (.*?)$/m);
-        if (serverMatch) servers = serverMatch[1];
+        const serverMatch = section.match(/\*\*OS[^:]*\*\*: (.*)$/m);
+        if (serverMatch) servers = serverMatch[1].replace(/,/g, ', ');
       }
       
       if (section.includes('**ツール**:')) {
-        const toolMatch = section.match(/\*\*ツール\*\*: (.*?)$/m);
-        if (toolMatch) tools = toolMatch[1];
+        const toolMatch = section.match(/\*\*ツール\*\*: (.*)$/m);
+        if (toolMatch) tools = toolMatch[1].replace(/,/g, ', ');
       }
       
       // 役割を抽出
       if (section.includes('**役割**:')) {
-        const roleMatch = section.match(/\*\*役割\*\*: (.*?)$/m);
+        const roleMatch = section.match(/\*\*役割\*\*: (.*)$/m);
         if (roleMatch) role = roleMatch[1];
       }
       
       // チーム規模を抽出
       if (section.includes('**チーム規模**:')) {
-        const teamMatch = section.match(/\*\*チーム規模\*\*: (.*?)$/m);
+        const teamMatch = section.match(/\*\*チーム規模\*\*: (.*)$/m);
         if (teamMatch) {
-          role += `\\n規模: ${teamMatch[1]}`;
+          role += `<br>規模: ${teamMatch[1]}`;
         }
       }
       
       // 担当工程を抽出
       if (section.includes('**担当工程**:')) {
-        const phaseMatch = section.match(/\*\*担当工程\*\*: (.*?)$/m);
+        const phaseMatch = section.match(/\*\*担当工程\*\*: (.*)$/m);
         if (phaseMatch) {
           const phaseText = phaseMatch[1];
           phases[0] = phaseText.includes('要件定義');
           phases[1] = phaseText.includes('基本設計');
           phases[2] = phaseText.includes('詳細設計');
-          phases[3] = phaseText.includes('製造・構築');
+          phases[3] = phaseText.includes('製造・構築') || phaseText.includes('製造') || phaseText.includes('構築');
           phases[4] = phaseText.includes('テスト');
-          phases[5] = phaseText.includes('保守・運用');
+          phases[5] = phaseText.includes('保守・運用') || phaseText.includes('保守') || phaseText.includes('運用');
         }
       }
       
@@ -481,7 +481,7 @@ function extractCareers(content) {
       });
       
       if (contentLines.length > 0) {
-        description = `■${description}\\n${contentLines.join('\\n')}`;
+        description = `■${description}<br>${contentLines.join('<br>')}`;
       }
       
       careers.push({
