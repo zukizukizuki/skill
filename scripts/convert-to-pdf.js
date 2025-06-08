@@ -359,12 +359,19 @@ function convertMarkdownToHTML(markdown) {
       }
       
       // ヘッダー行の判定
-      const isHeader = cells.some(cell => 
-        cell.includes('資格名') || cell.includes('取得年月') ||
-        cell.includes('スキルレベル') || cell.includes('業務領域') ||
-        cell.includes('言語') || cell.includes('サービス') ||
-        cell.includes('ツール') || cell.includes('技術')
-      );
+      // 完全一致でヘッダーを判定する（部分一致を避ける）
+      const headerPatterns = [
+        '資格名', '取得年月', 'スキルレベル', '業務領域',
+        '言語', 'サービス', 'ツール', '技術', 'OS/DB', 'OS'
+      ];
+      
+      const isHeader = cells.some(cell => {
+        const trimmedCell = cell.trim();
+        // 完全一致、または「技術」の場合は単独の列タイトルとして判定
+        return headerPatterns.includes(trimmedCell) || 
+               (trimmedCell === '技術' && cells.length === 2) ||
+               (trimmedCell === 'OS' && cells.length === 2);
+      });
       
       const tag = isHeader ? 'th' : 'td';
       const processedCells = cells.map(cell => processInlineMarkdown(cell));
